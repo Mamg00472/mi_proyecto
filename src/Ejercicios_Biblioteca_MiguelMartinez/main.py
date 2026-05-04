@@ -32,6 +32,10 @@ while True:
         libro = crear_libro()
         usuario = crear_usuario()
         biblioteca.prestar_libro(libro, usuario)
+        for l in biblioteca.lista_libros:
+            if libro.prestado == True and l.prestado == False:
+                l.prestado = True
+        
 
     elif menu == "4":
         libro = crear_libro()
