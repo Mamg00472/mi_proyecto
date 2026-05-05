@@ -4,15 +4,30 @@ from libro import Libro
 from usuario import Usuario
 
 def crear_libro():
-    titulo = input("Escriba el titulo del libro: ")
-    autor = input("Escriba el nombre del autor: ")
+    titulo = input("Escriba el titulo del libro: ").strip()
+    autor = input("Escriba el nombre del autor: ").strip()
     libro = Libro(titulo, autor)
     return libro
 
 def crear_usuario():
-    nombre = input("Escriba el nombre del usuario: ")
+    nombre = input("Escriba el nombre del usuario: ").strip()
     usuario = Usuario(nombre)
     return usuario
+
+def buscar_libro(biblioteca, titulo):
+    titulo = titulo.lower().strip()
+    for l in biblioteca.lista_libros:
+        if l.titulo.lower() == titulo:
+            return l
+    return None
+        
+def buscar_usuario(biblioteca, nombre):
+    nombre = nombre.lower().strip()
+    for u in biblioteca.lista_usuarios:
+        if u.nombre.lower() == nombre:
+            return u
+    return None
+
 
 biblioteca = Biblioteca()
 
@@ -29,21 +44,38 @@ while True:
         biblioteca.agregar_usuario(usuario)
 
     elif menu == "3":
-        libro = crear_libro()
-        usuario = crear_usuario()
-        biblioteca.prestar_libro(libro, usuario)
-        for l in biblioteca.lista_libros:
-            if libro.prestado == True and l.prestado == False:
-                l.prestado = True
+        titulo = input("Escribe el titulo del libro: ")
+        nombre = input("Escriba el nombre del usuario: ")
+
+        libro = buscar_libro(biblioteca, titulo)
+        usuario = buscar_usuario(biblioteca, nombre)
         
+        if libro is None:
+            print("Ese libro no esta en la biblioteca")
+            continue
+        if usuario is None:
+            print("Ese usuario no existe en la biblioteca")
+            continue
+
+        biblioteca.prestar_libro(libro, usuario)
 
     elif menu == "4":
-        libro = crear_libro()
-        usuario = crear_usuario()
+        titulo = input("Escribe el titulo del libro: ")
+        nombre = input("Escriba el nombre del usuario: ")
+
+        libro = buscar_libro(biblioteca, titulo)
+        usuario = buscar_usuario(biblioteca, nombre)
+
+        if libro is None:
+            print("Ese libro no esta en la biblioteca")
+            continue
+
+        if usuario is None:
+            print("Ese usuario no existe en la biblioteca")
+            continue
+
         biblioteca.devolver_libro(libro, usuario)
-        for l in biblioteca.lista_libros:
-            if libro.prestado == False and l.prestado == True:
-                l.prestado = False
+
 
     elif menu == "5":
         biblioteca.mostrar_info_libros()
