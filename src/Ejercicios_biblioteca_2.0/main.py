@@ -72,4 +72,5 @@ while True:
         print("Opcion no valida")
 
 
+biblioteca.guardar_datos()
 print("Saliendo del programa...")

@@ -1,6 +1,7 @@
 from models.libro import Libro
 from models.usuario import Usuario
 from models.historial import Historial
+from services.persistencia import guardar_json
 
 class Biblioteca:
 
@@ -66,3 +67,6 @@ class Biblioteca:
     def mostrar_info_usuarios(self):
         for usuario in self.lista_usuarios:
             print(usuario)
+
+    def guardar_datos(self):
+        self.historial.guardar()
