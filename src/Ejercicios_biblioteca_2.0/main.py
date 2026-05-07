@@ -69,6 +69,9 @@ while True:
         biblioteca.exportar_csv()
         
     elif menu == "7":
+        biblioteca.importar_excel()
+
+    elif menu == "8":
         break
 
     else:
