@@ -69,7 +69,10 @@ while True:
         biblioteca.exportar_csv()
         
     elif menu == "7":
-        biblioteca.importar_excel()
+        try:
+            biblioteca.importar_excel()
+        except ValueError as e:
+            print("Algun libro de los que estan en ese xlsx ya estan el la biblioteca")
 
     elif menu == "8":
         break
