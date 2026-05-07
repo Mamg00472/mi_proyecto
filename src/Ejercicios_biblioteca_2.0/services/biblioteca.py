@@ -19,13 +19,18 @@ class Biblioteca:
 
         for u in datos_usuarios:
             usuario = Usuario(u["nombre"])
+
+            for titulo_libro in u.get("libros", []):
+                libro = self.buscar_libro(titulo_libro)
+                usuario.lista.append(libro)
+
             self.lista_usuarios.append(usuario)
 
         self.historial = Historial()
 
     def agregar_libro(self, libro):
         if libro in self.lista_libros:
-            raise ValueError("El liro ya existe en la biblioteca")
+            raise ValueError("El libro ya existe en la biblioteca")
         
         self.lista_libros.append(libro)
 
@@ -53,7 +58,7 @@ class Biblioteca:
             raise ValueError("El usuario no existe en la biblioteca")
 
         if libro.prestado:
-            raise ValueError("el libro ya esta prestado")
+            raise ValueError("El libro ya esta prestado")
         
         usuario.prestar_libro(libro)
         self.historial.registrar(usuario.nombre, libro.titulo, "PRESTADO")
@@ -71,7 +76,7 @@ class Biblioteca:
         for u in self.lista_usuarios:
             if u.nombre.lower() == nombre:
                 return u
-        raise ValueError("usuario no encontrado en la biblioteca")
+        raise ValueError("Usuario no encontrado en la biblioteca")
 
     def mostrar_info_libros(self):
         for libro in self.lista_libros:
@@ -96,6 +101,10 @@ class Biblioteca:
         datos_usuarios = [
             {
                 "nombre" : usuario.nombre,
+                "libros" : [
+                    libro.titulo
+                    for libro in usuario.lista
+                ]
             }
             for usuario in self.lista_usuarios
         ]

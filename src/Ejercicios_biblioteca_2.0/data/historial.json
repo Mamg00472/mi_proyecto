@@ -4,5 +4,11 @@
         "libro": "El principito",
         "accion": "PRESTADO",
         "fecha": "07-05-2026 12:54"
+    },
+    {
+        "usuario": "mamc00472",
+        "libro": "el principito",
+        "accion": "PRESTADO",
+        "fecha": "07-05-2026 13:54"
     }
 ]

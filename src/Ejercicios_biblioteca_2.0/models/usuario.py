@@ -11,8 +11,10 @@ class Usuario:
     def __eq__(self, other):
         return self.nombre == other.nombre
     
-    def __str__(self):             
-         return f"El usuario {self.nombre} tiene: {self.lista}"
+    def __str__(self):
+         libros = [libro.titulo for libro in self.lista]
+
+         return f"El usuario {self.nombre} tiene: {libros}"
 
     def devolver_libro(self, libro):
         if libro in self.lista:
