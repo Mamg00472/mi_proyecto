@@ -14,6 +14,7 @@ class Biblioteca:
         
         for l in datos_libros:
             libro = Libro(l["titulo"], l["autor"])
+            libro.prestado = l["prestado"]
             self.lista_libros.append(libro)
 
         for u in datos_usuarios:
