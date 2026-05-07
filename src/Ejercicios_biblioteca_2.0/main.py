@@ -32,7 +32,7 @@ def buscar_usuario(biblioteca, nombre):
 biblioteca = Biblioteca()
 
 while True:
-    Menu.menu.mostrar_menu()
+    Menu.mostrar_menu()
     menu = input("Seleccione una opcion: ")
     
     if menu == "1":
