@@ -14,21 +14,6 @@ def crear_usuario():
     usuario = Usuario(nombre)
     return usuario
 
-def buscar_libro(biblioteca, titulo):
-    titulo = titulo.lower().strip()
-    for l in biblioteca.lista_libros:
-        if l.titulo.lower() == titulo:
-            return l
-    return None
-        
-def buscar_usuario(biblioteca, nombre):
-    nombre = nombre.lower().strip()
-    for u in biblioteca.lista_usuarios:
-        if u.nombre.lower() == nombre:
-            return u
-    return None
-
-
 biblioteca = Biblioteca()
 
 while True:
@@ -47,8 +32,8 @@ while True:
         titulo = input("Escribe el titulo del libro: ")
         nombre = input("Escriba el nombre del usuario: ")
 
-        libro = buscar_libro(biblioteca, titulo)
-        usuario = buscar_usuario(biblioteca, nombre)
+        libro = biblioteca.buscar_libro(titulo)
+        usuario = biblioteca.buscar_usuario(nombre)
         
         if libro is None:
             print("Ese libro no esta en la biblioteca")
@@ -63,8 +48,8 @@ while True:
         titulo = input("Escribe el titulo del libro: ")
         nombre = input("Escriba el nombre del usuario: ")
 
-        libro = buscar_libro(biblioteca, titulo)
-        usuario = buscar_usuario(biblioteca, nombre)
+        libro = biblioteca.buscar_libro(titulo)
+        usuario = biblioteca.buscar_usuario(nombre)
 
         if libro is None:
             print("Ese libro no esta en la biblioteca")

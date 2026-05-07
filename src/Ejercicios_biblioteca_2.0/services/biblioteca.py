@@ -33,6 +33,20 @@ class Biblioteca:
             return
         usuario.prestar_libro(libro)
 
+    def buscar_libro(self, titulo):
+        titulo = titulo.lower().strip()
+        for l in self.lista_libros:
+            if l.titulo.lower() == titulo:
+                return l
+        return None
+        
+    def buscar_usuario(self, nombre):
+        nombre = nombre.lower().strip()
+        for u in self.lista_usuarios:
+            if u.nombre.lower() == nombre:
+                return u
+        return None
+
     def mostrar_info_libros(self):
         for libro in self.lista_libros:
             print(libro)
