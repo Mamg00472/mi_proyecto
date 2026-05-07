@@ -37,23 +37,26 @@ while True:
             print("Error:", e)
 
     elif menu == "3":
-        titulo = input("Escribe el titulo del libro: ")
-        nombre = input("Escriba el nombre del usuario: ")
         try:
+            titulo = input("Escribe el titulo del libro: ")
+            nombre = input("Escriba el nombre del usuario: ")
+
             libro = biblioteca.buscar_libro(titulo)
             usuario = biblioteca.buscar_usuario(nombre)
+
             biblioteca.prestar_libro(libro, usuario)
 
         except ValueError as e:
             print("Error", e)
 
     elif menu == "4":
-        titulo = input("Escribe el titulo del libro: ")
-        nombre = input("Escriba el nombre del usuario: ")
-
         try:
+            titulo = input("Escribe el titulo del libro: ")
+            nombre = input("Escriba el nombre del usuario: ")
+
             libro = biblioteca.buscar_libro(titulo)
             usuario = biblioteca.buscar_usuario(nombre)
+
             biblioteca.devolver_libro(libro, usuario)
 
         except ValueError as e:
