@@ -8,6 +8,9 @@ class Usuario:
 
     def __eq__(self, other):
         return self.nombre == other.nombre
+    
+    def __str__(self):             
+         return f"El usuario {self.nombre} tiene: {self.lista}"
 
     def devolver_libro(self, libro):
         if libro in self.lista:
@@ -17,8 +20,5 @@ class Usuario:
             print("el usuario no tiene ese libro")
 
     def prestar_libro(self, libro):
-        if libro.prestado:
-            print("El libro ya esta prestado")
-        else:
             libro.prestado = True
             self.lista.append(libro)
