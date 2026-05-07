@@ -8,5 +8,10 @@
         "titulo": "El Quijote",
         "autor": "Miguel de Cervantes",
         "prestado": false
+    },
+    {
+        "titulo": "1984",
+        "autor": "Orwell",
+        "prestado": false
     }
 ]
