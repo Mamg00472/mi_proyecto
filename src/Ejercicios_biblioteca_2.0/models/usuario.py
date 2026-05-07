@@ -1,4 +1,4 @@
-from libro import Libro
+from models.libro import Libro
 
 class Usuario:
 
