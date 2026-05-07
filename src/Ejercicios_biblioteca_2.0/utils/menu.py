@@ -1,4 +1,4 @@
-class Utils:
+class Menu:
 
     def mostrar_menu():
         print("==== BIBLIOTECA ====")
