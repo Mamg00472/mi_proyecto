@@ -2,7 +2,8 @@ from models.libro import Libro
 from models.usuario import Usuario
 from models.historial import Historial
 from services.persistencia import guardar_json, cargar_json
-from services.excel_csv import exportar_libros_csv
+from services.excel_csv import exportar_libros_csv, importar_libros_excel
+
 
 class Biblioteca:
 
@@ -114,3 +115,6 @@ class Biblioteca:
 
     def exportar_csv(self):
         exportar_libros_csv(self.lista_libros)
+
+    def importar_excel(self):
+        importar_libros_excel(self, "data/libros.xlsx")

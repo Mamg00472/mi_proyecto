@@ -8,5 +8,6 @@ class Menu:
         print("4. Devolver libro")
         print("5. Mostrar libros")
         print("6. Exportar libros CSV")
-        print("7. Salir")
+        print("7. Importar libros desde excel")
+        print("8. Salir")
         print("====================")
