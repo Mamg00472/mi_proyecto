@@ -3,7 +3,7 @@ from models.libro import Libro
 class Usuario:
 
     def __init__(self, nombre):
-        self.comprobar_usuario(nombre)
+        self.comprobar_nombre(nombre)
 
         self.nombre = nombre
         self.lista = []
@@ -19,7 +19,7 @@ class Usuario:
             libro.prestado = False
             self.lista.remove(libro)
         else:
-            print("el usuario no tiene ese libro")
+            raise ValueError("el usuario no tiene ese libro")
 
     def prestar_libro(self, libro):
             libro.prestado = True

@@ -9,28 +9,35 @@ class Biblioteca:
 
     def agregar_libro(self, libro):
         if libro in self.lista_libros:
-            print("El liro ya existe en la biblioteca")
+            raise ValueError("El liro ya existe en la biblioteca")
         else:
             self.lista_libros.append(libro)
 
     def agregar_usuario(self, usuario):
         if usuario in self.lista_usuarios:
-            print("El usuario ya existe en la biblioteca")
+            raise ValueError("El usuario ya existe en la biblioteca")
         else:
             self.lista_usuarios.append(usuario)
 
     def devolver_libro(self, libro, usuario):
-        if libro in self.lista_libros:
-            usuario.devolver_libro(libro)
-
+        if libro not in self.lista_libros:
+            raise ValueError("El libro no existe en la biblioteca")
+            
+        if usuario not in self.lista_usuarios:
+            raise ValueError("El usuario no existe en la biblioteca")
+            
+        usuario.devolver_libro(libro)
     
     def prestar_libro(self, libro, usuario):
         if libro not in self.lista_libros:
-            print("El libro no esta en la biblioteca")
-            return
+            raise ValueError("El libro no esta en la biblioteca")
+        
+        if usuario not in self.lista_usuarios:
+            raise ValueError("El usuario no existe en la biblioteca")
+
         if libro.prestado:
-            print("el libro ya esta prestado")
-            return
+            raise ValueError("el libro ya esta prestado")
+        
         usuario.prestar_libro(libro)
 
     def buscar_libro(self, titulo):
@@ -38,14 +45,14 @@ class Biblioteca:
         for l in self.lista_libros:
             if l.titulo.lower() == titulo:
                 return l
-        return None
+        raise ValueError("Libro no encontrado en la biblioteca")
         
     def buscar_usuario(self, nombre):
         nombre = nombre.lower().strip()
         for u in self.lista_usuarios:
             if u.nombre.lower() == nombre:
                 return u
-        return None
+        raise ValueError("usuario no encontrado en la biblioteca")
 
     def mostrar_info_libros(self):
         for libro in self.lista_libros:
