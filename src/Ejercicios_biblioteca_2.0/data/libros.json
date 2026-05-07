@@ -3,5 +3,10 @@
         "titulo": "El principito",
         "autor": "Manolo",
         "prestado": true
+    },
+    {
+        "titulo": "El Quijote",
+        "autor": "Miguel de Cervantes",
+        "prestado": false
     }
 ]

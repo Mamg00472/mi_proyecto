@@ -8,8 +8,6 @@ class Libro:
         self.autor = autor
         self.prestado = False
 
-        print("Libro creado correctamente")
-
     def __eq__(self, other):
         return self.titulo == other.titulo
 
