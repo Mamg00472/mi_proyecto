@@ -1,13 +1,25 @@
 from models.libro import Libro
 from models.usuario import Usuario
 from models.historial import Historial
-from services.persistencia import guardar_json
+from services.persistencia import guardar_json, cargar_json
 
 class Biblioteca:
 
     def __init__(self):
+        datos_libros = cargar_json("data/libros.json")
+        datos_usuarios = cargar_json("data/usuarios.json")
+
         self.lista_libros = []
         self.lista_usuarios = []
+        
+        for l in datos_libros:
+            libro = Libro(l["titulo"], l["autor"])
+            self.lista_libros.append(libro)
+
+        for u in datos_usuarios:
+            usuario = Usuario(u["nombre"])
+            self.lista_usuarios.append(usuario)
+
         self.historial = Historial()
 
     def agregar_libro(self, libro):
@@ -70,3 +82,22 @@ class Biblioteca:
 
     def guardar_datos(self):
         self.historial.guardar()
+
+        datos_libros = [
+            {
+                "titulo" : libro.titulo,
+                "autor" : libro.autor,
+                "prestado" : libro.prestado
+            }
+            for libro in self.lista_libros
+        ]
+
+        datos_usuarios = [
+            {
+                "nombre" : usuario.nombre,
+            }
+            for usuario in self.lista_usuarios
+        ]
+
+        guardar_json("data/libros.json", datos_libros)
+        guardar_json("data/usuarios.json", datos_usuarios)
