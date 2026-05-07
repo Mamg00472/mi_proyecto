@@ -3,6 +3,8 @@ from models.libro import Libro
 class Usuario:
 
     def __init__(self, nombre):
+        self.comprobar_usuario(nombre)
+
         self.nombre = nombre
         self.lista = []
 
@@ -22,3 +24,7 @@ class Usuario:
     def prestar_libro(self, libro):
             libro.prestado = True
             self.lista.append(libro)
+
+    def comprobar_nombre(self, nombre):
+        if len(nombre) < 2 or len(nombre) > 50:
+             raise ValueError("Nombre no válido (debe tener entre 2 y 50 caracteres)")
