@@ -66,6 +66,9 @@ while True:
         biblioteca.mostrar_info_libros()
 
     elif menu == "6":
+        biblioteca.exportar_csv()
+        
+    elif menu == "7":
         break
 
     else:

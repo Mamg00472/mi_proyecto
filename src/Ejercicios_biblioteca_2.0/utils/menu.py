@@ -7,5 +7,6 @@ class Menu:
         print("3. Prestar libro")
         print("4. Devolver libro")
         print("5. Mostrar libros")
-        print("6. Salir")
+        print("6. Exportar libros CSV")
+        print("7. Salir")
         print("====================")

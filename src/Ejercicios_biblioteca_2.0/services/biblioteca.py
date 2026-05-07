@@ -2,6 +2,7 @@ from models.libro import Libro
 from models.usuario import Usuario
 from models.historial import Historial
 from services.persistencia import guardar_json, cargar_json
+from services.excel_csv import exportar_libros_csv
 
 class Biblioteca:
 
@@ -97,7 +98,6 @@ class Biblioteca:
             }
             for libro in self.lista_libros
         ]
-
         datos_usuarios = [
             {
                 "nombre" : usuario.nombre,
@@ -108,6 +108,9 @@ class Biblioteca:
             }
             for usuario in self.lista_usuarios
         ]
-
         guardar_json("data/libros.json", datos_libros)
         guardar_json("data/usuarios.json", datos_usuarios)
+
+
+    def exportar_csv(self):
+        exportar_libros_csv(self.lista_libros)
