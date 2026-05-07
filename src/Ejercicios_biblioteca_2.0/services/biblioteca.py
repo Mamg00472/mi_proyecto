@@ -1,23 +1,25 @@
 from models.libro import Libro
 from models.usuario import Usuario
+from models.historial import Historial
 
 class Biblioteca:
 
     def __init__(self):
         self.lista_libros = []
         self.lista_usuarios = []
+        self.historial = Historial()
 
     def agregar_libro(self, libro):
         if libro in self.lista_libros:
             raise ValueError("El liro ya existe en la biblioteca")
-        else:
-            self.lista_libros.append(libro)
+        
+        self.lista_libros.append(libro)
 
     def agregar_usuario(self, usuario):
         if usuario in self.lista_usuarios:
             raise ValueError("El usuario ya existe en la biblioteca")
-        else:
-            self.lista_usuarios.append(usuario)
+        
+        self.lista_usuarios.append(usuario)
 
     def devolver_libro(self, libro, usuario):
         if libro not in self.lista_libros:
@@ -27,6 +29,7 @@ class Biblioteca:
             raise ValueError("El usuario no existe en la biblioteca")
             
         usuario.devolver_libro(libro)
+        self.historial.registrar(usuario.nombre, libro.titulo, "DEVUELTO")
     
     def prestar_libro(self, libro, usuario):
         if libro not in self.lista_libros:
@@ -39,6 +42,8 @@ class Biblioteca:
             raise ValueError("el libro ya esta prestado")
         
         usuario.prestar_libro(libro)
+        self.historial.registrar(usuario.nombre, libro.titulo, "PRESTADO")
+        
 
     def buscar_libro(self, titulo):
         titulo = titulo.lower().strip()
