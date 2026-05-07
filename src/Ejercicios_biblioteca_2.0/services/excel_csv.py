@@ -2,7 +2,7 @@ import csv
 
 def exportar_libros_csv(lista_libros):
     with open("data/libros.csv", "w", encoding="utf-8") as file:
-        escritura = csv.write(file)
+        escritura = csv.writer(file)
 
         escritura.writerow([
             "titulo",
