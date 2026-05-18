@@ -97,7 +97,16 @@ class DesktopControl:
             print(f"Error presionando tecla: {e}")
             return False
 
-    def scroll(self, x: int, y: int, clicks: int = 5, direction: str = "down") -> bool:
+    def move_mouse(self, x: int, y: int) -> bool:
+        """Mueve el ratón a las coordenadas especificadas"""
+        try:
+            if not PYAUTOGUI_AVAILABLE:
+                return False
+            pyautogui.moveTo(x, y, duration=0.5)
+            return True
+        except Exception as e:
+            print(f"Error moviendo ratón: {e}")
+            return False
         """Desplaza la página en la dirección especificada"""
         try:
             if not PYAUTOGUI_AVAILABLE:
@@ -134,47 +143,58 @@ class DesktopControl:
             action = json.loads(action_json)
 
             action_type = action.get("action", "").lower()
-            result = {"success": False, "message": ""}
+            result = {"success": False, "message": "", "action": action_type}
 
             if action_type == "click":
                 coords = action.get("coordinates", [])
                 if coords and len(coords) == 2:
                     success = self.click(int(coords[0]), int(coords[1]))
                     result["success"] = success
-                    result["message"] = "Clic ejecutado" if success else "Error en clic"
+                    result["message"] = f"Clic en ({coords[0]}, {coords[1]})" if success else "Error en clic"
+
+            elif action_type == "move_mouse":
+                coords = action.get("coordinates", [])
+                if coords and len(coords) == 2:
+                    success = self.move_mouse(int(coords[0]), int(coords[1]))
+                    result["success"] = success
+                    result["message"] = f"Ratón movido a ({coords[0]}, {coords[1]})" if success else "Error moviendo ratón"
 
             elif action_type == "type":
                 text = action.get("text", "")
                 if text:
                     success = self.write(text)
                     result["success"] = success
-                    result["message"] = "Texto escrito" if success else "Error escribiendo"
+                    result["message"] = f"Texto escrito: {text[:30]}" if success else "Error escribiendo"
 
             elif action_type == "command":
                 command = action.get("command", "")
                 if command:
                     output = self.execute_command(command)
                     result["success"] = True
-                    result["message"] = output
+                    result["message"] = output[:100]
 
             elif action_type == "scroll":
                 coords = action.get("coordinates", [])
                 direction = action.get("direction", "down")
+                clicks = action.get("clicks", 5)
                 if coords and len(coords) == 2:
-                    success = self.scroll(int(coords[0]), int(coords[1]), direction=direction)
+                    success = self.scroll(int(coords[0]), int(coords[1]), clicks=clicks, direction=direction)
                     result["success"] = success
-                    result["message"] = "Scroll ejecutado" if success else "Error en scroll"
+                    result["message"] = f"Scroll {direction}" if success else "Error en scroll"
 
-            elif action_type == "key":
+            elif action_type == "press_key":
                 key = action.get("key", "")
                 if key:
                     success = self.press_key(key)
                     result["success"] = success
-                    result["message"] = "Tecla presionada" if success else "Error presionando tecla"
+                    result["message"] = f"Tecla presionada: {key}" if success else "Error presionando tecla"
+
+            else:
+                result["message"] = f"Acción desconocida: {action_type}"
 
             return result
 
-        except json.JSONDecodeError:
-            return {"success": False, "message": f"JSON inválido: {action_json}"}
+        except json.JSONDecodeError as e:
+            return {"success": False, "message": f"JSON inválido: {str(e)}", "action": "unknown"}
         except Exception as e:
-            return {"success": False, "message": f"Error: {str(e)}"}
+            return {"success": False, "message": f"Error: {str(e)}", "action": "unknown"}

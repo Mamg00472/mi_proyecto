@@ -34,23 +34,33 @@ class GeminiAPI:
                 with open(screenshot, "rb") as image_file:
                     image_data = image_file.read()
 
-                prompt = f"""Eres un asistente de IA que puede controlar una computadora.
+                prompt = f"""Eres un asistente de IA experto en automatizar acciones en computadoras.
 
-Instrucción: {instruction}
+INSTRUCCIÓN DEL USUARIO: {instruction}
 
-Basándote en la captura de pantalla adjunta, proporciona:
-1. El próximo paso a ejecutar (describiendo exactamente qué hacer)
-2. Las coordenadas aproximadas si necesitas hacer clic (format: x,y)
-3. Cualquier texto que necesites escribir
+Analizando la captura de pantalla adjunta, debes proporcionar la SIGUIENTE ACCIÓN que debes ejecutar.
 
-Responde en JSON con este formato:
+IMPORTANTE: Siempre responde en FORMATO JSON válido, sin texto adicional.
+
+Responde ÚNICAMENTE con este JSON:
 {{
-    "action": "click|type|command|scroll",
-    "description": "descripción de la acción",
+    "action": "click|type|press_key|command|scroll|move_mouse",
+    "description": "Descripción clara de qué hará esta acción",
     "coordinates": [x, y],
-    "text": "texto a escribir si aplica",
-    "command": "comando a ejecutar si es comando del sistema"
-}}"""
+    "text": "texto a escribir (si aplica)",
+    "key": "nombre de tecla o combinación (ctrl+c, enter, etc)",
+    "command": "comando del sistema (si aplica)",
+    "direction": "up|down|left|right"
+}}
+
+EJEMPLOS:
+- Para hacer clic: {{"action": "click", "description": "Clic en el botón crear", "coordinates": [145, 320]}}
+- Para escribir: {{"action": "type", "description": "Escribir nombre", "text": "Nueva Carpeta"}}
+- Para presionar tecla: {{"action": "press_key", "description": "Enter para confirmar", "key": "enter"}}
+- Para comando: {{"action": "command", "description": "Crear carpeta prueba", "command": "mkdir ~/Desktop/prueba"}}
+- Para mover mouse: {{"action": "move_mouse", "description": "Mover ratón a icono", "coordinates": [500, 300]}}
+
+Responde SOLO el JSON, nada más."""
 
                 response = self.client.models.generate_content(
                     model=MODEL_NAME,
@@ -60,9 +70,29 @@ Responde en JSON con este formato:
                     ]
                 )
             else:
+                prompt = f"""Eres un asistente de IA experto en automatizar acciones en computadoras.
+
+INSTRUCCIÓN DEL USUARIO: {instruction}
+
+Sin captura de pantalla disponible, debes proporcionar una ACCIÓN inicial para comenzar.
+
+IMPORTANTE: Siempre responde en FORMATO JSON válido, sin texto adicional.
+
+Responde ÚNICAMENTE con este JSON:
+{{
+    "action": "click|type|press_key|command|scroll|move_mouse",
+    "description": "Descripción clara de qué hará esta acción",
+    "coordinates": [x, y],
+    "text": "texto a escribir (si aplica)",
+    "key": "nombre de tecla o combinación",
+    "command": "comando del sistema (si aplica)"
+}}
+
+Responde SOLO el JSON, nada más."""
+
                 response = self.client.models.generate_content(
                     model=MODEL_NAME,
-                    contents=instruction
+                    contents=prompt
                 )
 
             self.conversation_history.append({
