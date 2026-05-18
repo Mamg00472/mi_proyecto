@@ -9,7 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(__file__))
 
 from gemini_api import GeminiAPI
-from learning_system import LearningSystem
+from skills.learning_system import LearningSystem
 import json
 import time
 

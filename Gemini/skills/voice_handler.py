@@ -2,6 +2,7 @@ import speech_recognition as sr
 import pyttsx3
 import threading
 from config import ENABLE_VOICE_INPUT
+from typing import Generator
 
 class VoiceHandler:
     def __init__(self):
@@ -47,7 +48,7 @@ class VoiceHandler:
         except Exception as e:
             print(f"Error hablando: {e}")
 
-    def process_voice_loop(self) -> None:
+    def process_voice_loop(self) -> Generator[str, None, None]:
         """Loop continuo de escucha de voz"""
         while True:
             command = self.listen_for_command()

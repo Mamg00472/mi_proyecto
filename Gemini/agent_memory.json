@@ -1,0 +1,63 @@
+{
+  "successful_patterns": [
+    {
+      "instruction": "mueve el rat\u00f3n a la izquierda",
+      "action": {
+        "action": "move_mouse",
+        "description": "Mover el cursor del rat\u00f3n 100 p\u00edxeles a la izquierda desde su posici\u00f3n actual",
+        "coordinates": [
+          -100,
+          0
+        ]
+      },
+      "timestamp": "2026-05-18T12:23:49.462736",
+      "success_count": 1
+    },
+    {
+      "instruction": "haz clic en el bot\u00f3n crear carpeta",
+      "action": {
+        "action": "click",
+        "description": "Hacer clic derecho en un \u00e1rea vac\u00eda del escritorio para abrir el men\u00fa contextual y seleccionar la opci\u00f3n de crear carpeta",
+        "coordinates": [
+          500,
+          500
+        ],
+        "text": "",
+        "key": "",
+        "command": ""
+      },
+      "timestamp": "2026-05-18T12:23:59.979246",
+      "success_count": 1
+    },
+    {
+      "instruction": "escribe 'prueba' en el campo de texto",
+      "action": {
+        "action": "click",
+        "description": "Hacer clic en el campo de texto para enfocarlo antes de escribir",
+        "coordinates": [
+          0,
+          0
+        ],
+        "text": null,
+        "key": null,
+        "command": null
+      },
+      "timestamp": "2026-05-18T12:24:14.634151",
+      "success_count": 1
+    },
+    {
+      "instruction": "presiona enter para confirmar",
+      "action": {
+        "action": "press_key",
+        "description": "Presionar la tecla Enter para confirmar",
+        "coordinates": [],
+        "text": "",
+        "key": "enter",
+        "command": ""
+      },
+      "timestamp": "2026-05-18T12:24:16.275650",
+      "success_count": 1
+    }
+  ],
+  "failed_patterns": []
+}

@@ -1,9 +1,9 @@
 import json
 import time
 from gemini_api import GeminiAPI
-from desktop_control import DesktopControl
-from voice_handler import VoiceHandler
-from learning_system import LearningSystem
+from skills.desktop_control import DesktopControl
+from skills.voice_handler import VoiceHandler
+from skills.learning_system import LearningSystem
 import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
