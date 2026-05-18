@@ -42,7 +42,21 @@ class DesktopControl:
             self.last_screenshot = filename
             return filename
         except Exception as e:
-            print(f"Error tomando screenshot: {e}")
+            print(f"Error tomando screenshot con PIL: {e}")
+            # Intentar con xdotool como alternativa
+            try:
+                filename = f"{SCREENSHOT_DIR}/screenshot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+                subprocess.run(
+                    f"import -window root {filename}",
+                    shell=True,
+                    capture_output=True,
+                    timeout=5
+                )
+                if os.path.exists(filename):
+                    self.last_screenshot = filename
+                    return filename
+            except:
+                pass
             return None
 
     def click(self, x: int, y: int, button: str = "left") -> bool:
