@@ -14,5 +14,8 @@ LOG_FILE = "agent_log.txt"
 MAX_RETRIES = 3
 TIMEOUT = 30
 
+HAS_DISPLAY = os.environ.get("DISPLAY", "") != ""
+USE_VIRTUAL_DISPLAY = not HAS_DISPLAY
+
 if not os.path.exists(SCREENSHOT_DIR):
     os.makedirs(SCREENSHOT_DIR)

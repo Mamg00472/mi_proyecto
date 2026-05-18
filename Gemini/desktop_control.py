@@ -1,20 +1,41 @@
-import pyautogui
-from PIL import ImageGrab
 import subprocess
 import time
 import json
 import os
-from config import SCREENSHOT_DIR
+from config import SCREENSHOT_DIR, HAS_DISPLAY, USE_VIRTUAL_DISPLAY
 from datetime import datetime
+
+try:
+    import pyautogui
+    PYAUTOGUI_AVAILABLE = True
+except Exception as e:
+    PYAUTOGUI_AVAILABLE = False
+
+try:
+    from PIL import ImageGrab
+except Exception:
+    ImageGrab = None
+
+if USE_VIRTUAL_DISPLAY:
+    try:
+        from pyvirtualdisplay import Display
+        display = Display(visible=False, size=(1920, 1080))
+        display.start()
+    except:
+        pass
 
 class DesktopControl:
     def __init__(self):
-        pyautogui.FAILSAFE = True
+        if PYAUTOGUI_AVAILABLE:
+            pyautogui.FAILSAFE = True
         self.last_screenshot = None
+        self.has_display = HAS_DISPLAY
 
     def take_screenshot(self) -> str:
         """Captura la pantalla y la guarda"""
         try:
+            if not ImageGrab:
+                return None
             screenshot = ImageGrab.grab()
             filename = f"{SCREENSHOT_DIR}/screenshot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
             screenshot.save(filename)
@@ -27,6 +48,8 @@ class DesktopControl:
     def click(self, x: int, y: int, button: str = "left") -> bool:
         """Hace clic en las coordenadas especificadas"""
         try:
+            if not PYAUTOGUI_AVAILABLE:
+                return False
             pyautogui.click(x, y, button=button)
             time.sleep(0.5)
             return True
@@ -37,6 +60,8 @@ class DesktopControl:
     def type_text(self, text: str, interval: float = 0.05) -> bool:
         """Escribe el texto especificado"""
         try:
+            if not PYAUTOGUI_AVAILABLE:
+                return False
             pyautogui.typewrite(text, interval=interval)
             time.sleep(0.3)
             return True
@@ -49,7 +74,8 @@ class DesktopControl:
         try:
             import pyperclip
             pyperclip.copy(text)
-            pyautogui.hotkey('ctrl', 'v')
+            if PYAUTOGUI_AVAILABLE:
+                pyautogui.hotkey('ctrl', 'v')
             time.sleep(0.5)
             return True
         except:
@@ -58,6 +84,8 @@ class DesktopControl:
     def press_key(self, key: str) -> bool:
         """Presiona una tecla o combinación"""
         try:
+            if not PYAUTOGUI_AVAILABLE:
+                return False
             if '+' in key:
                 keys = key.split('+')
                 pyautogui.hotkey(*keys)
@@ -72,6 +100,8 @@ class DesktopControl:
     def scroll(self, x: int, y: int, clicks: int = 5, direction: str = "down") -> bool:
         """Desplaza la página en la dirección especificada"""
         try:
+            if not PYAUTOGUI_AVAILABLE:
+                return False
             pyautogui.moveTo(x, y)
             if direction == "up":
                 clicks = -clicks

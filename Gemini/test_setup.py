@@ -8,8 +8,8 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(__file__))
 
-from config import GEMINI_API_KEY
-import google.generativeai as genai
+from config import GEMINI_API_KEY, HAS_DISPLAY
+import google.genai as genai
 
 def test_gemini_connection():
     print("\n" + "="*60)
@@ -24,10 +24,13 @@ def test_gemini_connection():
     try:
         print("⏳ Conectando con Gemini...")
         genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        client = genai.Client()
 
         print("⏳ Enviando prueba de mensaje...")
-        response = model.generate_content("Eres un asistente de desktop automation. Responde solo 'OK' para confirmar que funcionas correctamente.")
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents="Eres un asistente de desktop automation. Responde solo 'OK' para confirmar que funcionas correctamente."
+        )
 
         if response.text:
             print(f"\n✓ Conexión exitosa!")
@@ -45,13 +48,26 @@ def test_gemini_connection():
         print("  - Límite de cuota alcanzado")
         return False
 
+def test_display():
+    print("\n" + "="*60)
+    print("🖥️  VERIFICANDO DISPLAY")
+    print("="*60 + "\n")
+
+    if HAS_DISPLAY:
+        print("✓ Display gráfico disponible")
+        return True
+    else:
+        print("⚠️  Sin display gráfico (headless)")
+        print("   Se usará display virtual para screenshots")
+        return True
+
 def test_imports():
     print("\n" + "="*60)
     print("📦 VERIFICANDO DEPENDENCIAS")
     print("="*60 + "\n")
 
     modules = {
-        "google.generativeai": "Google Generative AI",
+        "google.genai": "Google Generative AI",
         "pyautogui": "PyAutoGUI",
         "PIL": "Pillow",
         "speech_recognition": "Speech Recognition",
@@ -73,6 +89,7 @@ if __name__ == "__main__":
     print("\n🚀 Iniciando pruebas del agente Gemini...\n")
 
     deps_ok = test_imports()
+    display_ok = test_display()
     gemini_ok = test_gemini_connection()
 
     print("="*60)

@@ -1,23 +1,28 @@
-import google.generativeai as genai
+import google.genai as genai
 from config import GEMINI_API_KEY, MODEL_NAME
 import json
+import os
 from typing import Optional
 
 class GeminiAPI:
     def __init__(self):
         genai.configure(api_key=GEMINI_API_KEY)
-        self.model = genai.GenerativeModel(MODEL_NAME)
+        self.client = genai.Client()
         self.conversation_history = []
 
     def analyze_screenshot(self, image_path: str, instruction: str) -> str:
         """Analiza una captura de pantalla con una instrucción usando visión"""
         try:
-            image_file = genai.upload_file(image_path)
+            with open(image_path, "rb") as image_file:
+                image_data = image_file.read()
 
-            response = self.model.generate_content([
-                instruction,
-                image_file
-            ])
+            response = self.client.models.generate_content(
+                model=MODEL_NAME,
+                contents=[
+                    instruction,
+                    {"type": "image", "data": image_data}
+                ]
+            )
 
             return response.text
         except Exception as e:
@@ -26,8 +31,10 @@ class GeminiAPI:
     def execute_command(self, instruction: str, screenshot: Optional[str] = None) -> str:
         """Envía una instrucción a Gemini para ejecutar una acción"""
         try:
-            if screenshot:
-                image_file = genai.upload_file(screenshot)
+            if screenshot and os.path.exists(screenshot):
+                with open(screenshot, "rb") as image_file:
+                    image_data = image_file.read()
+
                 prompt = f"""Eres un asistente de IA que puede controlar una computadora.
 
 Instrucción: {instruction}
@@ -46,12 +53,18 @@ Responde en JSON con este formato:
     "command": "comando a ejecutar si es comando del sistema"
 }}"""
 
-                response = self.model.generate_content([
-                    prompt,
-                    image_file
-                ])
+                response = self.client.models.generate_content(
+                    model=MODEL_NAME,
+                    contents=[
+                        prompt,
+                        {"type": "image", "data": image_data}
+                    ]
+                )
             else:
-                response = self.model.generate_content(instruction)
+                response = self.client.models.generate_content(
+                    model=MODEL_NAME,
+                    contents=instruction
+                )
 
             self.conversation_history.append({
                 "role": "user",
