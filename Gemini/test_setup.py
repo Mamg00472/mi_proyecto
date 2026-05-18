@@ -8,7 +8,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(__file__))
 
-from config import GEMINI_API_KEY, HAS_DISPLAY
+from config import GEMINI_API_KEY, HAS_DISPLAY, MODEL_NAME
 import google.genai as genai
 
 def test_gemini_connection():
@@ -23,12 +23,11 @@ def test_gemini_connection():
 
     try:
         print("⏳ Conectando con Gemini...")
-        genai.configure(api_key=GEMINI_API_KEY)
-        client = genai.Client()
+        client = genai.Client(api_key=GEMINI_API_KEY)
 
         print("⏳ Enviando prueba de mensaje...")
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model=MODEL_NAME,
             contents="Eres un asistente de desktop automation. Responde solo 'OK' para confirmar que funcionas correctamente."
         )
 
@@ -66,22 +65,36 @@ def test_imports():
     print("📦 VERIFICANDO DEPENDENCIAS")
     print("="*60 + "\n")
 
-    modules = {
+    modules_required = {
         "google.genai": "Google Generative AI",
-        "pyautogui": "PyAutoGUI",
         "PIL": "Pillow",
         "speech_recognition": "Speech Recognition",
         "pyttsx3": "pyttsx3",
     }
 
+    modules_optional = {
+        "pyautogui": "PyAutoGUI (para desktop control)",
+        "pyvirtualdisplay": "PyVirtualDisplay (para headless mode)",
+    }
+
     all_ok = True
-    for module, name in modules.items():
+
+    print("REQUERIDAS:")
+    for module, name in modules_required.items():
         try:
             __import__(module)
             print(f"✓ {name}")
         except ImportError:
             print(f"❌ {name} (falta instalar)")
             all_ok = False
+
+    print("\nOPCIONALES:")
+    for module, name in modules_optional.items():
+        try:
+            __import__(module)
+            print(f"✓ {name}")
+        except (ImportError, Exception) as e:
+            print(f"⚠️  {name} (opcional - {type(e).__name__})")
 
     return all_ok
 

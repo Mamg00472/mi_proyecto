@@ -6,8 +6,7 @@ from typing import Optional
 
 class GeminiAPI:
     def __init__(self):
-        genai.configure(api_key=GEMINI_API_KEY)
-        self.client = genai.Client()
+        self.client = genai.Client(api_key=GEMINI_API_KEY)
         self.conversation_history = []
 
     def analyze_screenshot(self, image_path: str, instruction: str) -> str:
