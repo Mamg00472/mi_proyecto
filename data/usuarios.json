@@ -1,0 +1,23 @@
+[
+    {
+        "id": "ADMIN01",
+        "tipo": "Bibliotecario",
+        "nombre": "Bibliotecario Jefe",
+        "correo": "admin@biblioteca.com",
+        "sanciones": []
+    },
+    {
+        "id": "EST01",
+        "tipo": "Estudiante",
+        "nombre": "Miguel",
+        "correo": "miguel@estudiante.com",
+        "sanciones": []
+    },
+    {
+        "id": "PROF01",
+        "tipo": "Profesor",
+        "nombre": "Carlos",
+        "correo": "carlos@profesor.com",
+        "sanciones": []
+    }
+]
