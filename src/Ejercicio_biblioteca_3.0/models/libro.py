@@ -2,15 +2,10 @@ from recurso import Recurso
 
 class Libro(Recurso):
     
-    def __init__(self, id_recurso, titulo, autor, anyo, genero):
+    def __init__(self, id_recurso, titulo, autor, anyo, num_paginas):
         super().__init__(id_recurso, titulo, autor, anyo)
-        self.comprobar_genero(genero)
-        self.genero = genero
-    
-    def comprobar_genero(self, genero):
-        if len(genero) < 2 or len(genero) > 50:
-            raise ValueError("Género no válido (debe tener entre 2 y 50 caracteres)")
+        self.num_paginas = num_paginas
     
     def info_detallada(self):
         estado = "Prestado" if self.prestado else "Disponible"
-        return f"[Libro] ID: {self.id} | {self.titulo} - {self.autor} ({self.anio}) | Estado: {estado}"
+        return f"[Libro] ID: {self.id} | {self.titulo} - {self.autor} ({self.anio}) | Páginas: {self.num_paginas} | Estado: {estado}"
