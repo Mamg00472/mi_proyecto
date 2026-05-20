@@ -135,7 +135,7 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
             elif "Salir" in opcion_texto:
                 biblioteca.guardar_todo()
                 print("Persistencia JSON actualizada. ¡Cierre de sesión seguro!")
-                sys.exit(0)
+                return
                 
             input("\nPresione ENTER para regresar al menú...")
             curses.reset_shell_mode() # Limpia el rastro de la consola clásica
