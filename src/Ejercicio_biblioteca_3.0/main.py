@@ -19,11 +19,8 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
         "3. Exportar mi Historial a CSV"
     ]
     
-    # El Profesor tiene además la opción de descargar
     if isinstance(usuario, Profesor):
         opciones.append("4. Descargar Recurso Digital")
-        
-    # El Bibliotecario tiene todo el bloque de gestión
     elif isinstance(usuario, Bibliotecario):
         opciones.append("4. Registrar un nuevo Préstamo")
         opciones.append("5. Registrar una Devolución")
@@ -33,11 +30,12 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
     opciones.append("Salir del Sistema")
     
     seleccionada = 0
+    ejecutando = True  # Control de estado limpio para el bucle
     
-    while True:
+    while ejecutando:
         stdscr.clear()
         
-        # Dibujamos la interfaz visual en la terminal de Ubuntu
+        # Dibujamos la interfaz visual
         stdscr.addstr(1, 2, f"====================================================", curses.A_BOLD)
         stdscr.addstr(2, 2, f"  SISTEMA DE GESTIÓN DE BIBLIOTECA - INTERFAZ CURSES  ", curses.A_BOLD)
         stdscr.addstr(3, 2, f"====================================================", curses.A_BOLD)
@@ -56,8 +54,6 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                 stdscr.addstr(y, 4, f"   {opcion} ")
                 
         stdscr.refresh()
-        
-        # Capturamos el teclado
         tecla = stdscr.getch()
         
         if tecla == curses.KEY_UP and seleccionada > 0:
@@ -135,12 +131,13 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
             elif "Salir" in opcion_texto:
                 biblioteca.guardar_todo()
                 print("Persistencia JSON actualizada. ¡Cierre de sesión seguro!")
-                return
-                
-            input("\nPresione ENTER para regresar al menú...")
-            curses.reset_shell_mode() # Limpia el rastro de la consola clásica
-            stdscr.clear()
-            stdscr.refresh()
+                ejecutando = False  # Rompe el ciclo limpiamente
+            
+            if ejecutando:
+                input("\nPresione ENTER para regresar al menú...")
+                curses.reset_shell_mode() # Prepara los descriptores de la terminal de nuevo
+                stdscr.clear()
+                stdscr.refresh()
 
 def main():
     biblioteca = SistemaBiblioteca()
