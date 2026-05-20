@@ -15,30 +15,14 @@ class Usuario(ABC):
     def limite_prestamos(self):
         """Funcion abstracta para definir el limite de prestamos segun el tipo de usuario"""
         
+    @abstractmethod
+    def generar_reporte(self):
+        """Reporte polimórfico."""
 
     def puede_tomar_prestado(self):
          return len(self.prestamos_activos) < self.limite_prestamos() and self.sanciones < 0
-
-    def devolver_libro(self, libro):
-        if libro in self.prestamos_activos:
-            libro.prestado = False
-            self.prestamos_activos.remove(libro)
-        else:
-            raise ValueError("el usuario no tiene ese libro")
-
-    def prestar_libro(self, libro):
-        if not self.puede_tomar_prestado():
-            raise ValueError("El usuario no puede realizar más préstamos (límite alcanzado o tiene sanciones)")
-        libro.prestado = True
-        self.prestamos_activos.append(libro)
-
-    def comprobar_nombre(self, nombre):
-        if len(nombre) < 2 or len(nombre) > 50:
-             raise ValueError("Nombre no válido (debe tener entre 2 y 50 caracteres)")
         
     def __eq__(self, other):
+        if not isinstance(other, Usuario):
+            return False
         return self.id == other.id
-    
-    def __str__(self):
-         libros = [libro.titulo for libro in self.prestamos_activos]
-         return f"[{self.__class__.__name__}] ID: {self.id} | {self.nombre} tiene: {libros}"
