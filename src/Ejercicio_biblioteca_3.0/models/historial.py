@@ -15,5 +15,5 @@ class Historial:
             "fecha": datetime.now().strftime("%d-%m-%Y %H:%M")
             })
         
-    def generar_reporte_historial(self):
+    def generar_reporte_historial(self) -> list:
         return self.registros

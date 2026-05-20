@@ -2,7 +2,7 @@ from recurso import Recurso
 
 class Libro(Recurso):
     
-    def __init__(self, id_recurso, titulo, autor, anyo, num_paginas):
+    def __init__(self, id_recurso: str, titulo: str, autor: str, anyo: int, num_paginas: int):
         super().__init__(id_recurso, titulo, autor, anyo)
         self.num_paginas = num_paginas
     
