@@ -37,7 +37,7 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
         
         # Dibujamos la interfaz visual
         stdscr.addstr(1, 2, f"====================================================", curses.A_BOLD)
-        stdscr.addstr(2, 2, f"  SISTEMA DE GESTIÓN DE BIBLIOTECA - INTERFAZ CURSES  ", curses.A_BOLD)
+        stdscr.addstr(2, 2, f"  SISTEMA DE GESTIÓN DE BIBLIOTECA III - INTERFAZ CURSES  ", curses.A_BOLD)
         stdscr.addstr(3, 2, f"====================================================", curses.A_BOLD)
         stdscr.addstr(5, 2, f"Usuario: {usuario.nombre} | Rol: {rol}")
         stdscr.addstr(6, 2, "Use las FLECHAS (▲/▼) para moverse y ENTER para elegir.", curses.A_DIM)
@@ -63,14 +63,10 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
         elif tecla in [10, 13, curses.KEY_ENTER]: # Si el usuario pulsa ENTER
             opcion_texto = opciones[seleccionada]
             
-            # Pausamos curses temporalmente para leer/escribir en consola clásica
-            curses.def_prog_mode()
-            stdscr.clear()
-            curses.endwin()
-            
-            print(f"\n--- Ejecutando: {opcion_texto} ---\n")
-            
+            # --- SELECCIÓN DE ACCIONES ---
             if "Ver mi Reporte Personal" in opcion_texto:
+                curses.endwin() # Apagamos curses solo para ver el print clásico
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 print(usuario.generar_reporte())
                 if usuario.prestamos_activos:
                     print("\nRecursos en préstamo activo:")
@@ -82,16 +78,22 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                         print(f" - {s}")
                         
             elif "Ver Reporte General" in opcion_texto:
+                curses.endwin()
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 biblioteca.reporte_general()
                 print("\nCatálogo completo disponible:")
                 for r in biblioteca.lista_recursos:
                     print(r.info_detallada())
                     
             elif "Exportar mi Historial" in opcion_texto:
+                curses.endwin()
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 biblioteca.exportar_historial_usuario(usuario.nombre)
                 print(f"Fichero generado en: data/historial_{usuario.nombre.lower().replace(' ', '_')}.csv")
                 
             elif "Descargar Recurso Digital" in opcion_texto:
+                curses.endwin()
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 id_rec = input("Introduce el ID del Recurso Digital: ").strip()
                 try:
                     biblioteca.descargar_recurso_digital(usuario.id, id_rec)
@@ -100,6 +102,8 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                     print("Error:", e)
                     
             elif "Registrar un nuevo Préstamo" in opcion_texto:
+                curses.endwin()
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 id_usu = input("ID del Usuario solicitante: ").strip()
                 id_rec = input("ID del Recurso físico a prestar: ").strip()
                 try:
@@ -109,6 +113,8 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                     print("Error:", e)
                     
             elif "Registrar una Devolución" in opcion_texto:
+                curses.endwin()
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 id_usu = input("ID del Usuario que devuelve: ").strip()
                 id_rec = input("ID del Recurso a devolver: ").strip()
                 try:
@@ -118,6 +124,8 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                     print("Error:", e)
                     
             elif "Importar recursos nuevos" in opcion_texto:
+                curses.endwin()
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 try:
                     biblioteca.importar_desde_excel()
                     print("Recursos cargados en lote desde 'data/recursos.xlsx'.")
@@ -125,17 +133,20 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                     print("Error de importación:", e)
                     
             elif "Exportar catálogo actual" in opcion_texto:
+                curses.endwin()
+                print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 biblioteca.exportar_datos_a_archivos()
                 print("Estado actual exportado a 'data/recursos.csv'.")
                 
             elif "Salir" in opcion_texto:
+                # No apagamos curses aquí para que wrapper gestione el cierre de forma nativa
                 biblioteca.guardar_todo()
-                print("Persistencia JSON actualizada. ¡Cierre de sesión seguro!")
-                ejecutando = False  # Rompe el ciclo limpiamente
+                ejecutando = False 
             
+            # Si no hemos salido, pausamos para que leas y volvemos a activar el entorno gráfico
             if ejecutando:
                 input("\nPresione ENTER para regresar al menú...")
-                curses.reset_shell_mode() # Prepara los descriptores de la terminal de nuevo
+                curses.reset_shell_mode()
                 stdscr.clear()
                 stdscr.refresh()
 
