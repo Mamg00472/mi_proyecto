@@ -35,7 +35,7 @@ class Prestamo:
         self.recurso.prestado = False  # Marcar el recurso como no prestado
 
     def __str__(self):
-        formato = "½d/%m/%Y"
+        formato = "%d-%m-%Y"
         estado = "Devuelto" if self.fecha_devolucion_real else "En préstamo"
         return (f"({estado}) | Usuario: {self.usuario.nombre} | Recurso: {self.recurso.titulo}\n"
                 f"Sacado el: {self.fecha_prestamo.strftime(formato)} | "
