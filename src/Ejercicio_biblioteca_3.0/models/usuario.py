@@ -17,16 +17,7 @@ class Usuario(ABC):
         
 
     def puede_tomar_prestado(self):
-         if len(self.sanciones) > 0:
-             return False
-         return len(self.prestamos_activos) < self.limite_prestamos()
-
-    def __eq__(self, other):
-        return self.id == other.id
-    
-    def __str__(self):
-         libros = [libro.titulo for libro in self.prestamos_activos]
-         return f"El usuario {self.nombre} tiene: {libros}"
+         return len(self.prestamos_activos) < self.limite_prestamos() and self.sanciones < 0
 
     def devolver_libro(self, libro):
         if libro in self.prestamos_activos:
@@ -36,9 +27,18 @@ class Usuario(ABC):
             raise ValueError("el usuario no tiene ese libro")
 
     def prestar_libro(self, libro):
-            libro.prestado = True
-            self.prestamos_activos.append(libro)
+        if not self.puede_tomar_prestado():
+            raise ValueError("El usuario no puede realizar más préstamos (límite alcanzado o tiene sanciones)")
+        libro.prestado = True
+        self.prestamos_activos.append(libro)
 
     def comprobar_nombre(self, nombre):
         if len(nombre) < 2 or len(nombre) > 50:
              raise ValueError("Nombre no válido (debe tener entre 2 y 50 caracteres)")
+        
+    def __eq__(self, other):
+        return self.id == other.id
+    
+    def __str__(self):
+         libros = [libro.titulo for libro in self.prestamos_activos]
+         return f"[{self.__class__.__name__}] ID: {self.id} | {self.nombre} tiene: {libros}"
