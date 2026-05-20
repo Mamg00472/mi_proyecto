@@ -1,6 +1,6 @@
 from datetime import datetime
-from persistencia import cargar_json, guardar_json
-from excel_csv import importar_recursos_excel, exportar_recursos_csv, exportar_historial_usuario_csv
+from services.persistencia import cargar_json, guardar_json
+from services.excel_csv import importar_recursos_excel, exportar_recursos_csv, exportar_historial_usuario_csv
 
 # Importamos todos los modelos que creamos antes
 from models.estudiante import Estudiante

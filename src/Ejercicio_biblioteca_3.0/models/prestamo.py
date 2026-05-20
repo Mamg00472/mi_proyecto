@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from recurso import Recurso
-from usuario import Usuario
+from models.recurso import Recurso
+from models.usuario import Usuario
 
 class Prestamo:
     def __init__(self, recurso: Recurso, usuario: Usuario, fecha_prestamo: datetime = None):

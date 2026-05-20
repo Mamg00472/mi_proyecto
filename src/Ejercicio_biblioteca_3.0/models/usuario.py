@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from utils.validaciones import validar_longitud_texto, validar_anyo, validar_correo
+
 class Usuario(ABC):
 
     def __init__(self, id_usuario: str,nombre: str, correo: str, sanciones: list=None):

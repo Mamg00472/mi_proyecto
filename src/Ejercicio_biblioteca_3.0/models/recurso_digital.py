@@ -1,4 +1,4 @@
-from recurso import Recurso
+from models.recurso import Recurso
 
 class RecursoDigital(Recurso):
     
