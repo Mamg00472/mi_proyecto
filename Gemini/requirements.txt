@@ -1,9 +1,0 @@
-google-genai>=0.1.0
-pyautogui>=0.9.53
-pillow>=10.0.0
-SpeechRecognition>=3.10.0
-pyttsx3>=2.90
-python-dotenv>=1.0.0
-numpy>=1.24.0
-pyperclip>=1.8.2
-pyvirtualdisplay>=3.0

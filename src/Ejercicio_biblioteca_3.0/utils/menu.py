@@ -1,0 +1,13 @@
+class Menu:
+
+    def mostrar_menu():
+        print("==== BIBLIOTECA ====")
+        print("1. Agregar libro")
+        print("2. Agregar usuario")
+        print("3. Prestar libro")
+        print("4. Devolver libro")
+        print("5. Mostrar libros")
+        print("6. Exportar libros CSV")
+        print("7. Importar libros desde excel")
+        print("8. Salir")
+        print("====================")
