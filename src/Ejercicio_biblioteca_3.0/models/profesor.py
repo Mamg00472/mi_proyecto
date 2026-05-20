@@ -2,6 +2,7 @@ from models.usuario import Usuario
 
 class Profesor(Usuario):
 
+    @property
     def limite_prestamos(self) -> int:
         return 5
 
