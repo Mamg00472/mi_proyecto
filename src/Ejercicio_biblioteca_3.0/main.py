@@ -1,5 +1,4 @@
 import curses
-import sys
 from services.sistema_biblioteca import SistemaBiblioteca
 from models.estudiante import Estudiante
 from models.profesor import Profesor
@@ -43,7 +42,7 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
         stdscr.addstr(6, 2, "Use las FLECHAS (▲/▼) para moverse y ENTER para elegir.", curses.A_DIM)
         stdscr.addstr(7, 2, "----------------------------------------------------")
         
-        # Renderizar el menú interactivo
+        # menú interactivo
         for idx, opcion in enumerate(opciones):
             y = 9 + idx
             if idx == seleccionada:
@@ -65,7 +64,7 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
             
             # --- SELECCIÓN DE ACCIONES ---
             if "Ver mi Reporte Personal" in opcion_texto:
-                curses.endwin() # Apagamos curses solo para ver el print clásico
+                curses.endwin() 
                 print(f"\n--- Ejecutando: {opcion_texto} ---\n")
                 print(usuario.generar_reporte())
                 if usuario.prestamos_activos:
@@ -139,7 +138,6 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                 print("Estado actual exportado a 'data/recursos.csv'.")
                 
             elif "Salir" in opcion_texto:
-                # No apagamos curses aquí para que wrapper gestione el cierre de forma nativa
                 biblioteca.guardar_todo()
                 ejecutando = False 
             
@@ -153,7 +151,7 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
 def main():
     biblioteca = SistemaBiblioteca()
     
-    # Inyectamos unos usuarios iniciales si el JSON está vacío para poder testear
+    # Inyectamos unos usuarios iniciales si el JSON está vacío
     if not biblioteca.lista_usuarios:
         biblioteca.agregar_usuario(Bibliotecario("ADMIN01", "Bibliotecario Jefe", "admin@biblioteca.com"))
         biblioteca.agregar_usuario(Estudiante("EST01", "Miguel", "miguel@estudiante.com"))
