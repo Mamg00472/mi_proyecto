@@ -138,7 +138,9 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
                 sys.exit(0)
                 
             input("\nPresione ENTER para regresar al menú...")
-            stdscr.reset_prog_mode() # Reactivamos la pantalla de curses
+            curses.reset_shell_mode() # Limpia el rastro de la consola clásica
+            stdscr.clear()
+            stdscr.refresh()
 
 def main():
     biblioteca = SistemaBiblioteca()
