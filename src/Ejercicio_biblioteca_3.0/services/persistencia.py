@@ -1,22 +1,28 @@
 import json
 import os
 
-def cargar_json(ruta : str) -> list:
-    # Verificar si el archivo existe antes de intentar cargarlo
-    if not os.path.exists(ruta):
+# Calculamos de forma dinámica dónde está la raíz del ejercicio (la carpeta Ejercicio_biblioteca_3.0)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def obtener_ruta_absoluta(ruta_relativa: str) -> str:
+    """Convierte una ruta relativa tipo 'data/archivo.json' en una ruta absoluta dentro del ejercicio."""
+    return os.path.join(BASE_DIR, ruta_relativa)
+
+def cargar_json(ruta: str) -> list:
+    ruta_absoluta = obtener_ruta_absoluta(ruta)
+    if not os.path.exists(ruta_absoluta):
         return []
     
-    # Intentar cargar el archivo JSON, manejando posibles errores de formato
-    with open(ruta, "r", encoding="utf-8") as file:
+    with open(ruta_absoluta, "r", encoding="utf-8") as file:
         try:
             return json.load(file)
         except json.JSONDecodeError:
             return []
 
-
-def guardar_json(ruta : str, datos : list):
-    # asegura que el directorio exista antes de intentar guardar el archivo
-    os.makedirs(os.path.dirname(ruta), exist_ok=True)
-
-    with open(ruta, "w", encoding="utf-8") as file:
+def guardar_json(ruta: str, datos: list):
+    ruta_absoluta = obtener_ruta_absoluta(ruta)
+    # Nos aseguramos de que la carpeta interna 'data/' exista
+    os.makedirs(os.path.dirname(ruta_absoluta), exist_ok=True)
+    
+    with open(ruta_absoluta, "w", encoding="utf-8") as file:
         json.dump(datos, file, indent=4, ensure_ascii=False)
