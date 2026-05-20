@@ -39,9 +39,9 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
         
         # Dibujamos la interfaz visual en la terminal de Ubuntu
         stdscr.addstr(1, 2, f"====================================================", curses.A_BOLD)
-        stdscr.addstr(2, 2, f"  SISTEMA DE GESTIÓN DE BIBLIOTECA III - INTERFAZ CURSES  ", curses.A_BOLD)
+        stdscr.addstr(2, 2, f"  SISTEMA DE GESTIÓN DE BIBLIOTECA - INTERFAZ CURSES  ", curses.A_BOLD)
         stdscr.addstr(3, 2, f"====================================================", curses.A_BOLD)
-        stdscr.addstr(5, 2, f"👤 Usuario: {usuario.nombre} | 🔑 Rol: {rol}")
+        stdscr.addstr(5, 2, f"Usuario: {usuario.nombre} | Rol: {rol}")
         stdscr.addstr(6, 2, "Use las FLECHAS (▲/▼) para moverse y ENTER para elegir.", curses.A_DIM)
         stdscr.addstr(7, 2, "----------------------------------------------------")
         
@@ -77,64 +77,64 @@ def mostrar_menu_curses(stdscr, usuario, biblioteca: SistemaBiblioteca):
             if "Ver mi Reporte Personal" in opcion_texto:
                 print(usuario.generar_reporte())
                 if usuario.prestamos_activos:
-                    print("\n📚 Recursos en préstamo activo:")
+                    print("\nRecursos en préstamo activo:")
                     for p in usuario.prestamos_activos:
                         print(f" - {p.recurso.info_detallada()} (Devolución estimada: {p.fecha_devolucion_estimada.strftime('%d-%m-%Y')})")
                 if usuario.sanciones:
-                    print("\n⚠️ Sanciones en tu cuenta:")
+                    print("\nSanciones en tu cuenta:")
                     for s in usuario.sanciones:
                         print(f" - {s}")
                         
             elif "Ver Reporte General" in opcion_texto:
                 biblioteca.reporte_general()
-                print("\n📋 Catálogo completo disponible:")
+                print("\nCatálogo completo disponible:")
                 for r in biblioteca.lista_recursos:
                     print(r.info_detallada())
                     
             elif "Exportar mi Historial" in opcion_texto:
                 biblioteca.exportar_historial_usuario(usuario.nombre)
-                print(f"✅ Fichero generado en: data/historial_{usuario.nombre.lower().replace(' ', '_')}.csv")
+                print(f"Fichero generado en: data/historial_{usuario.nombre.lower().replace(' ', '_')}.csv")
                 
             elif "Descargar Recurso Digital" in opcion_texto:
                 id_rec = input("Introduce el ID del Recurso Digital: ").strip()
                 try:
                     biblioteca.descargar_recurso_digital(usuario.id, id_rec)
-                    print("⬇️ Descarga completada con éxito. Acción registrada en Historial.")
+                    print("Descarga completada con éxito. Acción registrada en Historial.")
                 except ValueError as e:
-                    print("❌ Error:", e)
+                    print("Error:", e)
                     
             elif "Registrar un nuevo Préstamo" in opcion_texto:
                 id_usu = input("ID del Usuario solicitante: ").strip()
                 id_rec = input("ID del Recurso físico a prestar: ").strip()
                 try:
                     biblioteca.prestar_recurso(id_usu, id_rec)
-                    print("✅ Préstamo asociado y guardado correctamente.")
+                    print("Préstamo asociado y guardado correctamente.")
                 except ValueError as e:
-                    print("❌ Error:", e)
+                    print("Error:", e)
                     
             elif "Registrar una Devolución" in opcion_texto:
                 id_usu = input("ID del Usuario que devuelve: ").strip()
                 id_rec = input("ID del Recurso a devolver: ").strip()
                 try:
                     biblioteca.devolver_recurso(id_usu, id_rec)
-                    print("✅ Devolución procesada. Se han comprobado retrasos y penalizaciones.")
+                    print("Devolución procesada. Se han comprobado retrasos y penalizaciones.")
                 except ValueError as e:
-                    print("❌ Error:", e)
+                    print("Error:", e)
                     
             elif "Importar recursos nuevos" in opcion_texto:
                 try:
                     biblioteca.importar_desde_excel()
-                    print("✅ Recursos cargados en lote desde 'data/recursos.xlsx'.")
+                    print("Recursos cargados en lote desde 'data/recursos.xlsx'.")
                 except Exception as e:
-                    print("❌ Error de importación:", e)
+                    print("Error de importación:", e)
                     
             elif "Exportar catálogo actual" in opcion_texto:
                 biblioteca.exportar_datos_a_archivos()
-                print("✅ Estado actual exportado a 'data/recursos.csv'.")
+                print("Estado actual exportado a 'data/recursos.csv'.")
                 
             elif "Salir" in opcion_texto:
                 biblioteca.guardar_todo()
-                print("💾 Persistencia JSON actualizada. ¡Cierre de sesión seguro!")
+                print("Persistencia JSON actualizada. ¡Cierre de sesión seguro!")
                 sys.exit(0)
                 
             input("\nPresione ENTER para regresar al menú...")
@@ -151,7 +151,7 @@ def main():
         biblioteca.guardar_todo()
 
     print("===========================================")
-    print("🔑 LOGIN REQUERIDO - CONTROL DE ROLES")
+    print("LOGIN REQUERIDO - CONTROL DE ROLES")
     print("===========================================")
     print("IDs de prueba disponibles en el sistema:")
     print(" - Estudiante: EST01\n - Profesor: PROF01\n - Bibliotecario: ADMIN01\n")
@@ -163,7 +163,7 @@ def main():
         # Lanzamos la interfaz curses pasándole el usuario autenticado
         curses.wrapper(mostrar_menu_curses, usuario_logeado, biblioteca)
     except ValueError:
-        print("\n❌ Error: ID no registrado en la base de datos.")
+        print("\nError: ID no registrado en la base de datos.")
 
 if __name__ == "__main__":
     main()
